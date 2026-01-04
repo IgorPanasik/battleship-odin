@@ -1,14 +1,14 @@
 {
-    "name": "template-odin",
+    "name": "battleship-odin",
     "version": "1.0.0",
-    "description": "Base setting for any projects",
-    "homepage": "https://github.com/IgorPanasik/template-odin#readme",
+    "description": "Battleship The Odin Project",
+    "homepage": "https://github.com/IgorPanasik/battleship-odin",
     "bugs": {
-        "url": "https://github.com/IgorPanasik/template-odin/issues"
+        "url": "https://github.com/IgorPanasik/battleship-odin/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/IgorPanasik/template-odin.git"
+        "url": "git+https://github.com/IgorPanasik/battleship-odin"
     },
     "license": "ISC",
     "main": "index.js",
@@ -16,18 +16,23 @@
     "scripts": {
         "build": "webpack --config webpack.prod.js",
         "start": "webpack serve --open --config webpack.dev.js",
-        "deploy": "git subtree push --prefix dist origin gh-pages"
+        "deploy": "git subtree push --prefix dist origin gh-pages",
+        "test": "jest"
     },
     "sideEffects": [
         "styles.css"
     ],
     "devDependencies": {
+        "@babel/core": "^7.28.5",
+        "@babel/preset-env": "^7.28.5",
         "@eslint/js": "^9.39.2",
+        "babel-jest": "^30.2.0",
         "css-loader": "^7.1.2",
         "eslint": "^9.39.2",
         "globals": "^17.0.0",
         "html-loader": "^5.1.0",
         "html-webpack-plugin": "^5.6.5",
+        "jest": "^30.2.0",
         "prettier": "3.7.4",
         "style-loader": "^4.0.0",
         "webpack": "^5.104.1",

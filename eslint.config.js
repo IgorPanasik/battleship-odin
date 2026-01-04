@@ -1,6 +1,6 @@
-import js from '@eslint/js'
-import { defineConfig } from 'eslint/config'
-import globals from 'globals'
+import js from '@eslint/js';
+import { defineConfig } from 'eslint/config';
+import globals from 'globals';
 
 export default defineConfig([
     {
@@ -14,4 +14,15 @@ export default defineConfig([
             globals: globals.browser,
         },
     },
-])
+    {
+        overrides: [
+            {
+                files: ['tests/**/*'],
+                plugins: ['jest'],
+                env: {
+                    'jest/globals': true,
+                },
+            },
+        ],
+    },
+]);
