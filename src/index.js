@@ -1,6 +1,1 @@
-import './styles.css'
-const initApp = () => {
-    console.log('Hello World!')
-}
-
-initApp()
+import './styles.css';
