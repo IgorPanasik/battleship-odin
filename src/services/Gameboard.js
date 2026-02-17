@@ -1,4 +1,4 @@
-import { Ship } from './Ship';
+import { Ship } from './Ship.js';
 
 export class Gameboard {
     constructor(width = 10, height = 10) {
@@ -7,6 +7,7 @@ export class Gameboard {
         this.ships = [];
         this.shipCells = new Map();
         this.missedHits = new Set();
+        this.firedShots = new Set();
     }
     // placing ships on the board by coordinates
     placeShips(shipLength, [x, y], direction) {
@@ -45,6 +46,7 @@ export class Gameboard {
 
     receiveAttack([x, y]) {
         const cellKey = `${x},${y}`;
+        this.firedShots.add(cellKey);
         if (this.shipCells.has(cellKey)) {
             this.shipCells.get(cellKey).hit();
         } else {
