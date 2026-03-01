@@ -9,6 +9,11 @@ export class GameControl {
     }
 
     startGame() {
+        this.playerOne.gameboard.resetBoard();
+        this.playerTwo.gameboard.resetBoard();
+        this.playerTwo.resetState();
+
+        this.currentPlayer = this.playerOne;
         this.gameActive = true;
     }
 
@@ -44,10 +49,12 @@ export class GameControl {
         const playerTwoLost = this.playerTwo.gameboard.allShipsSunk();
 
         if (playerOneLost) {
+            this.gameActive = false;
             return `${this.playerTwo.name} Won!`;
         }
 
         if (playerTwoLost) {
+            this.gameActive = false;
             return `${this.playerOne.name} Won!`;
         }
         return;
