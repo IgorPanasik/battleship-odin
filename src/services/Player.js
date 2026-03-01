@@ -37,7 +37,9 @@ export class Player {
     }
 
     isOutOfBounds(x, y, enemyBoard) {
-        return x < 1 || x > enemyBoard.width || y < 1 || y > enemyBoard.height;
+        return (
+            x < 0 || x >= enemyBoard.width || y < 0 || y >= enemyBoard.height
+        );
     }
 
     resetState() {
@@ -48,8 +50,13 @@ export class Player {
     }
 
     handleHunt(enemyBoard) {
-        const x = Math.floor(Math.random() * enemyBoard.width) + 1;
-        const y = Math.floor(Math.random() * enemyBoard.height) + 1;
+        let x, y;
+        // Keep trying until we find an unfired cell
+        do {
+            x = Math.floor(Math.random() * enemyBoard.width);
+            y = Math.floor(Math.random() * enemyBoard.height);
+        } while (enemyBoard.firedShots.has(`${x},${y}`));
+
         enemyBoard.receiveAttack([x, y]);
 
         if (enemyBoard.shipCells.has(`${x},${y}`)) {
@@ -57,6 +64,8 @@ export class Player {
             this.hitCluster.push(`${x},${y}`);
             this.targetQueue.push('UP', 'RIGHT', 'LEFT', 'DOWN');
         }
+        // Always return what was attacked!
+        return [x, y];
     }
 
     handleTarget(enemyBoard) {
@@ -80,11 +89,14 @@ export class Player {
             this.lastHit = `${nx},${ny}`;
             this.currentDirection = direction;
             this.hitCluster.push(`${nx},${ny}`);
-            return;
+            return [nx, ny];
         }
 
         this.targetQueue.shift();
-        if (this.targetQueue.length === 0) return this.resetState();
+        if (this.targetQueue.length === 0) {
+            this.resetState();
+            return [nx, ny];
+        }
     }
 
     handleDestroy(enemyBoard) {
@@ -110,8 +122,9 @@ export class Player {
 
             const ship = enemyBoard.shipCells.get(`${nx},${ny}`);
             if (ship.isSunk()) this.resetState();
-            return;
+            return [nx, ny];
         }
         this.currentDirection = null;
+        return [nx, ny];
     }
 }
