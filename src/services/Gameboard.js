@@ -57,4 +57,11 @@ export class Gameboard {
     allShipsSunk() {
         return this.ships.every((ship) => ship.isSunk());
     }
+
+    resetBoard() {
+        this.ships = [];
+        this.shipCells = new Map();
+        this.missedHits = new Set();
+        this.firedShots = new Set();
+    }
 }
