@@ -1,18 +1,12 @@
-import { Player } from './Player.js';
-
 export class GameControl {
-    constructor() {
-        this.playerOne = new Player('player1', 'human');
-        this.playerTwo = new Player('player2', 'bot');
+    constructor(playerOne, playerTwo) {
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
         this.currentPlayer = this.playerOne;
         this.gameActive = false;
     }
 
     startGame() {
-        this.playerOne.gameboard.resetBoard();
-        this.playerTwo.gameboard.resetBoard();
-        this.playerTwo.resetState();
-
         this.currentPlayer = this.playerOne;
         this.gameActive = true;
     }
@@ -30,7 +24,6 @@ export class GameControl {
             this.switchTurn();
             return;
         } else {
-            // UI can render coords (hit or miss!)
             const coords = this.playerTwo.attackBot(this.playerOne.gameboard);
             this.switchTurn();
             return coords;
