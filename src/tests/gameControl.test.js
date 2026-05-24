@@ -1,10 +1,15 @@
-import { GameControl } from '../services/GameControl.js';
+import { GameControl } from '../core/GameControl.js';
+import { Player } from '../core/Player.js';
 
 describe('GameControl', () => {
     let gc;
+    let p1;
+    let p2;
 
     beforeEach(() => {
-        gc = new GameControl();
+        p1 = new Player('Alex', 'human');
+        p2 = new Player('Computer', 'bot');
+        gc = new GameControl(p1, p2);
     });
 
     test('initializes with playerOne as current player', () => {
@@ -34,6 +39,7 @@ describe('GameControl', () => {
 
     test('handleAttack triggers bot attack when it is bot turn', () => {
         gc.currentPlayer = gc.playerTwo;
+
         const botSpy = jest
             .spyOn(gc.playerTwo, 'attackBot')
             .mockReturnValue([5, 5]);
@@ -56,7 +62,7 @@ describe('GameControl', () => {
         );
 
         const result = gc.checkGameOver();
-        expect(result).toBe('player1 Won!');
+        expect(result).toMatch(new RegExp(gc.playerOne.name));
         expect(gc.gameActive).toBe(false);
     });
 });

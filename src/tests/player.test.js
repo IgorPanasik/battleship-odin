@@ -1,6 +1,5 @@
-import { Gameboard } from '../services/Gameboard';
-import { Player } from '../services/Player';
-
+import { Gameboard } from '../core/Gameboard.js';
+import { Player } from '../core/Player.js';
 describe('player', () => {
     let playerHuman;
     let playerBot;
@@ -16,6 +15,7 @@ describe('player', () => {
         expect(playerBot.type).toBe('bot');
         expect(playerHuman.gameboard).toBeInstanceOf(Gameboard);
     });
+
     // --- Moves human/bot ------------------------------------------------------
     test('human attack calls enemyBoard.receiveAttack', () => {
         const mockBoard = { receiveAttack: jest.fn() };
@@ -31,12 +31,16 @@ describe('player', () => {
             height: 10,
             firedShots: new Set(),
             shipCells: new Map([['5,5', mockShip]]),
+            coordKey: (x, y) => `${x},${y}`,
             receiveAttack: jest.fn((coords) => {
                 mockBoard.firedShots.add(coords.join(','));
             }),
         };
+
         jest.spyOn(global.Math, 'random').mockReturnValue(0.5);
+
         playerBot.attackBot(mockBoard);
+
         expect(playerBot.lastHit).toBe('5,5');
         expect(playerBot.targetQueue.length).toBe(4);
         expect(playerBot.currentDirection).toBe(null);
@@ -52,6 +56,7 @@ describe('player', () => {
             height: 10,
             firedShots: new Set(),
             shipCells: new Map([['5,5', mockShip]]),
+            coordKey: (x, y) => `${x},${y}`,
             receiveAttack: jest.fn((coords) => {
                 mockBoard.firedShots.add(coords.join(','));
             }),
@@ -60,6 +65,7 @@ describe('player', () => {
 
         expect(playerBot.lastHit).toBe('');
         expect(playerBot.targetQueue.length).toBe(0);
+        Math.random.mockRestore();
     });
 
     // ---------------- TARGET ----------------
@@ -71,20 +77,23 @@ describe('player', () => {
             height: 10,
             firedShots: new Set(['5,4']),
             shipCells: new Map(),
+            coordKey: (x, y) => `${x},${y}`,
             receiveAttack: jest.fn((coords) => {
                 mockBoard.firedShots.add(coords.join(','));
             }),
         };
+
         playerBot.attackBot(mockBoard);
+
         expect(mockBoard.receiveAttack).toHaveBeenCalledWith([6, 5]);
     });
 
     // ---------------- DESTROY ----------------
     test('bot continues attacking in DESTROY mode and resets after sinking', () => {
-        let hitCount = 1;
+        let isShipSunk = false;
         const mockShip = {
-            hit: jest.fn(() => hitCount++),
-            isSunk: jest.fn(() => hitCount >= 3),
+            hit: jest.fn(),
+            isSunk: jest.fn(() => isShipSunk),
         };
 
         const mockBoard = {
@@ -96,23 +105,21 @@ describe('player', () => {
                 ['6,5', mockShip],
                 ['7,5', mockShip],
             ]),
+            coordKey: (x, y) => `${x},${y}`,
             receiveAttack: jest.fn((coords) => {
                 const key = coords.join(',');
-                if (mockBoard.shipCells.has(key)) {
-                    mockShip.hit();
-                }
                 mockBoard.firedShots.add(key);
             }),
         };
 
         playerBot.lastHit = '5,5';
         playerBot.currentDirection = 'RIGHT';
-        playerBot.targetQueue = [];
+        playerBot.targetQueue = ['UP', 'RIGHT', 'LEFT', 'DOWN'];
 
         playerBot.attackBot(mockBoard);
         expect(playerBot.lastHit).toBe('6,5');
 
-        jest.spyOn(global.Math, 'random').mockReturnValue(0.99);
+        isShipSunk = true;
 
         playerBot.attackBot(mockBoard);
 
@@ -120,7 +127,5 @@ describe('player', () => {
         expect(playerBot.currentDirection).toBe(null);
         expect(playerBot.targetQueue.length).toBe(0);
         expect(playerBot.hitCluster.length).toBe(0);
-
-        Math.random.mockRestore();
     });
 });

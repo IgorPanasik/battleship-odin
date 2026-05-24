@@ -1,4 +1,6 @@
-import { DOM } from '../dom/dom.js';
+import { DOM } from '../domElements.js';
+import { ShipDragDrop } from './ShipDragDrop.js';
+import { boardView } from './boardView.js';
 
 export class GameSetup {
     constructor(
@@ -19,7 +21,7 @@ export class GameSetup {
 
     randomizeShips() {
         this.player.gameboard.placeAllShipsRandomly();
-        this.player.renderBoard(this.boardElement);
+        boardView.render(this.player, this.boardElement);
         this.dragDrop.updateShipButtons();
         this.updateButtonStates();
 
@@ -30,7 +32,7 @@ export class GameSetup {
 
     resetBoard() {
         this.player.gameboard.resetBoard();
-        this.player.renderBoard(this.boardElement);
+        boardView.render(this.player, this.boardElement);
         this.resetShipButtons();
         this.updateButtonStates();
         this.boardElement.classList.remove('board--overlay');
@@ -76,19 +78,40 @@ export class GameSetup {
 
     terminate() {
         this.boardElement.classList.add('board--overlay');
-        this.boardElement.querySelectorAll('.ship').forEach((s) => s.remove());
+        boardView.render(this.player, this.boardElement);
         this.resetShipButtons();
     }
 
     handleReadyClick() {
         this.boardElement.classList.add('board--overlay');
-        this.boardElement
-            .querySelectorAll('.ship-dock__ship')
-            .forEach((s) => s.remove());
+        boardView.render(this.player, this.boardElement);
 
         if (this.readyBtnElement) {
             this.readyBtnElement.disabled = true;
             this.readyBtnElement.classList.add('is-hidden');
         }
+    }
+
+    static startSetupPhase(player, boardElement, readyBtn, isBotMode) {
+        const dragDrop = new ShipDragDrop(
+            player,
+            boardElement,
+            DOM.$replaceShipsDock
+        );
+        const gameSetup = new GameSetup(
+            player,
+            dragDrop,
+            boardElement,
+            DOM.$replaceShipsDock,
+            readyBtn,
+            isBotMode
+        );
+
+        dragDrop.init();
+        boardView.render(player, boardElement);
+
+        dragDrop.onStateChanged = () => gameSetup.updateButtonStates();
+
+        return gameSetup;
     }
 }

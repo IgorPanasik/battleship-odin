@@ -4,6 +4,8 @@ export class Player {
         this.name = name;
         this.type = type;
         this.gameboard = new Gameboard(10, 10);
+        this.shotsCount = 0;
+        this.hitsCount = 0;
         this.lastHit = '';
         this.hitCluster = [];
         this.currentDirection = null;
@@ -146,39 +148,5 @@ export class Player {
         }
         this.currentDirection = null;
         return [nx, ny];
-    }
-
-    renderBoard(boardElement, isEnemy = false) {
-        boardElement.textContent = '';
-
-        for (let x = 0; x < this.gameboard.height; x++) {
-            for (let y = 0; y < this.gameboard.width; y++) {
-                const cell = document.createElement('div');
-                cell.classList.add('cell');
-                cell.dataset.x = x;
-                cell.dataset.y = y;
-
-                const coord = `${x},${y}`;
-                const ship = this.gameboard.shipCells.get(coord);
-
-                if (ship && !isEnemy) {
-                    cell.classList.add('ship', 'is-ship-placed');
-                    cell.textContent = 'X';
-                }
-
-                if (this.gameboard.firedShots.has(coord)) {
-                    cell.classList.add('cell--fired');
-
-                    if (ship) {
-                        cell.classList.add('hit');
-                        cell.textContent = 'K';
-                    } else {
-                        cell.classList.add('miss');
-                        cell.textContent = '•';
-                    }
-                }
-                boardElement.appendChild(cell);
-            }
-        }
     }
 }

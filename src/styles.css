@@ -54,6 +54,19 @@ svg {
     font-style: normal;
 }
 
+.btn--sound {
+    width: 300px;
+    background-color: #462f9c;
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.btn--sound.btn--muted {
+    background-color: #555;
+    opacity: 0.8;
+    color: #e0dfdf;
+}
+
 /* BASE ELEMENTS */
 
 .btn {
@@ -116,6 +129,10 @@ svg {
 
 /* BLOCK: HEADER*/
 .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding: 50px;
 }
 
@@ -325,6 +342,8 @@ svg {
     padding: 5px 8px;
     border-radius: 5px;
     background: #4caf50;
+    width: 200px;
+    text-align: center;
 }
 
 .battlefield__wrap {
@@ -339,6 +358,13 @@ svg {
     align-items: center;
     gap: 20px;
     margin-bottom: 20px;
+}
+
+.board-label {
+    padding: 5px;
+    border: 2px solid #0ed85b;
+    background: #e5d5a9b9;
+    color: #8a2be2;
 }
 
 /* GRID BOARD */
@@ -439,12 +465,14 @@ svg {
 .modal__title {
     color: #e5d5a9;
     font-weight: 400;
+    text-align: center;
 }
 
 .modal__content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
     gap: 20px;
     background-color: #923bcce0;
     padding: 20px;

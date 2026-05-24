@@ -25,6 +25,8 @@ export const DOM = {
     $replaceShipsDock: document.querySelector('.js-ship-dock'),
     $shipTexts: document.querySelectorAll('.js-ship-text'),
     $turnDisplay: document.querySelector('.js-turn-display'),
+    $label1: document.querySelector('.js-label-board-1'),
+    $label2: document.querySelector('.js-label-board-2'),
 
     // Modal window
     $modalStartGame: document.querySelector('.js-modal-start'),
@@ -35,4 +37,5 @@ export const DOM = {
 
     // Additional elements
     $rules: document.querySelector('.rules'),
+    $soundToggleBtn: document.querySelector('.js-sound-toggle-btn'),
 };

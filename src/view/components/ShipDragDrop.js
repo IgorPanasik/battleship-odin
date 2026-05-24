@@ -1,3 +1,5 @@
+import { boardView } from './boardView.js';
+
 export class ShipDragDrop {
     constructor(player, boardElement, replaceShipsElements) {
         this.player = player;
@@ -126,7 +128,7 @@ export class ShipDragDrop {
                 [x, y],
                 direction
             );
-            this.player.renderBoard(this.boardElement);
+            boardView.render(this.player, this.boardElement);
 
             this.updateShipButton(this.draggedShipSize);
             if (typeof this.onStateChanged === 'function') {

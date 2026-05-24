@@ -17,6 +17,7 @@
 			<h1 class="header__title">Let's play BattleShip
 				<img class="header__logo" src="../public/battleship.svg" width="50" height="50" alt="Battleship Logo">
 			</h1>
+			<button class="btn btn--sound js-sound-toggle-btn" type="button">🔊 Mute Music</button>
 		</header>
 
 		<section class="setup js-setup-section">
@@ -96,9 +97,11 @@
 				<div class="board-wrapper">
 					<div class="board js-board" id="board-one"></div>
 					<button class="btn js-ready-btn-one" type="button" disabled>Ready!</button>
+					<p class="board-label js-label-board-1 is-hidden">Player 1 (Your Fleet)</p>
 				</div>
 				<div class="board-wrapper">
 					<div class="board js-board" id="board-two"></div>
+					<p class="board-label js-label-board-2 is-hidden">Enemy (Target)</p>
 				</div>
 			</div>
 

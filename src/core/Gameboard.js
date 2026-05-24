@@ -126,8 +126,10 @@ export class Gameboard {
         this.firedShots.add(key);
         if (this.shipCells.has(key)) {
             this.shipCells.get(key).hit();
+            return true;
         } else {
             this.missedHits.add(key);
+            return false;
         }
     }
 

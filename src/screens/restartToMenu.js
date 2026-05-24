@@ -1,8 +1,10 @@
-import { DOM } from '../dom/dom.js';
+import { DOM } from '../view/domElements.js';
 
 export const restartToMenu = () => {
     DOM.$restartBtn.classList.add('is-hidden');
     DOM.$turnDisplay.classList.add('is-hidden');
+    DOM.$label1?.classList.add('is-hidden');
+    DOM.$label2?.classList.add('is-hidden');
 
     DOM.$form.classList.remove('is-hidden');
     DOM.$form.reset();

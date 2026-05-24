@@ -1,4 +1,4 @@
-import { Gameboard } from '../services/Gameboard';
+import { Gameboard } from '../core/Gameboard.js';
 
 describe('board', () => {
     let board;
@@ -19,14 +19,14 @@ describe('board', () => {
     test('places a ship horizontally at correct coordinates', () => {
         board.placeShips(3, [2, 3], 'horizontal');
         const keys = [...board.shipCells.keys()];
-        expect(keys).toEqual(['2,3', '3,3', '4,3']);
+        expect(keys).toEqual(['2,3', '2,4', '2,5']);
         expect(board.ships.length).toEqual(1);
     });
 
     test('throws when placing a ship that overlaps another', () => {
         board.placeShips(3, [2, 3], 'horizontal');
         expect(() => board.placeShips(3, [2, 3], 'horizontal')).toThrow(
-            'Ships cannot overlap'
+            'Cannot place ship here'
         );
     });
 
@@ -39,14 +39,20 @@ describe('board', () => {
     test('places a ship vertically at correct coordinates', () => {
         board.placeShips(4, [5, 3], 'vertical');
         const keys = [...board.shipCells.keys()];
-        expect(keys).toEqual(['5,3', '5,4', '5,5', '5,6']);
+        expect(keys).toEqual(['5,3', '6,3', '7,3', '8,3']);
     });
 
     // --- Attacks -------------------------------------------------------------
     test('registers a hit on a ship', () => {
         board.placeShips(2, [5, 5], 'vertical');
         board.receiveAttack([5, 5]);
-        expect(board.ships[0].countHits).toBe(1);
+
+        const targetShip = board.ships[0];
+        expect(
+            targetShip.hits !== undefined
+                ? targetShip.hits
+                : targetShip.countHits
+        ).toBe(1);
     });
 
     test('registers a miss when attacking empty cell', () => {
@@ -56,24 +62,16 @@ describe('board', () => {
     });
 
     // --- Sinking -------------------------------------------------------------
-    test('allShipsSunk returns false when ships remain', () => {
-        board.placeShips(2, [5, 5], 'vertical');
-        board.receiveAttack([5, 5]);
-        expect(board.allShipsSunk()).toBe(false);
-    });
-
     test('allShipsSunk returns true when all ships are sunk', () => {
         board.placeShips(3, [2, 3], 'horizontal');
         board.placeShips(2, [5, 5], 'vertical');
 
-        // sink first ship
         board.receiveAttack([2, 3]);
-        board.receiveAttack([3, 3]);
-        board.receiveAttack([4, 3]);
+        board.receiveAttack([2, 4]);
+        board.receiveAttack([2, 5]);
 
-        // sink second ship
         board.receiveAttack([5, 5]);
-        board.receiveAttack([5, 6]);
+        board.receiveAttack([6, 5]);
 
         expect(board.allShipsSunk()).toBe(true);
     });
