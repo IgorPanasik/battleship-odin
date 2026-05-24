@@ -46,7 +46,7 @@ To ensure a smooth Hotseat multiplayer mode without exposing placement setups, a
 
 ![VS Bot](./public/image2.PNG)
 
-### 👥 Local Hotseat Mode
+### The Game
 
 ![VS Human](./public/image3.PNG)
 
