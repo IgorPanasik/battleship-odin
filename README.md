@@ -38,11 +38,17 @@ To ensure a smooth Hotseat multiplayer mode without exposing placement setups, a
 
 ---
 
-### 🎮 Battle Interfaces
+### 🎮 Battle Interfaces & Grids
 
-![Battleship Gameboard Grid Layout]('./public/image1.PNG')
-![VS Bot]('./public/image2.PNG')
-![VS Human]('./public/image3.PNG')
+![Battleship Gameboard Grid Layout](./public/image1.PNG)
+
+### 🤖 AI Versus Mode
+
+![VS Bot](./public/image2.PNG)
+
+### 👥 Local Hotseat Mode
+
+![VS Human](./public/image3.PNG)
 
 ---
 
